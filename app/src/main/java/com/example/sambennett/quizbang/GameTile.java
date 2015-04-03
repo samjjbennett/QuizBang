@@ -65,6 +65,11 @@ public class GameTile {
         return points;
     }
 
+    public void clearPoints(){
+        this.points = 0;
+        tile.setText("");
+    }
+
     public void setPoints(int points) {
         this.points = points;
         tile.setText(Integer.toString(points));

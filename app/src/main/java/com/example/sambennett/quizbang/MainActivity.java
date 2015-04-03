@@ -1,5 +1,6 @@
 package com.example.sambennett.quizbang;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private int[] pointValues = new int[]{100,200,300,400,500,600,700,800,900,1000};
 
     private UpdateTask updateTask;
+    private MediaPlayer mediaPlayer;
     private Vector<GameTile> tiles;
     private Button start;
     private boolean buttonState;
@@ -32,6 +34,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.polka);
 
         tiles = new Vector<>();
 
@@ -74,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(buttonState){
+            mediaPlayer.start();
             for(int i = 0; i < tiles.size(); i++){
                 tiles.elementAt(i).setOff();
             }
@@ -82,6 +87,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             updateTask = new UpdateTask();
             updateTask.execute();
         }else{
+               mediaPlayer.pause();
             int active = 0;
             //The for loop finds the element that is active.
             for(int i = 0; i < tiles.size(); i++){
@@ -137,6 +143,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     int points = generator.nextInt(9) + 0;
                     if(values[2] != i){
                         tiles.elementAt(i).setPoints(pointValues[points]);
+                    }else{
+                        tiles.elementAt(i).clearPoints();
                     }
                 }
                 //Sets buttons state to on
